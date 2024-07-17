@@ -43,7 +43,7 @@ func main() {
 		log.Println(err)
 	}
 
-	_, err = lista_perrona.Remove("ropaa")
+	_, err = lista_perrona.Remove("ropa")
 
 	if err != nil {
 		log.Println(err)
@@ -66,6 +66,7 @@ func main() {
 	// 	println("Elements en el loop: " + elementos[i])
 	// }
 	println("Lista perrona: ")
+	println(lista_perrona.IsEmpty())
 	elementos := lista_perrona.GetAll()
 	for i := 0; i < len(elementos); i++ {
 		println(strconv.Itoa(i) + ": " + elementos[i])
@@ -76,5 +77,9 @@ func main() {
 	// for i := 0; i < len(elementosOtra); i++ {
 	// 	println(strconv.Itoa(i) + ": " + elementosOtra[i])
 	// }
+
+	lista_perrona.Clear()
+
+	println(lista_perrona.IsEmpty())
 
 }

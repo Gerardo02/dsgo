@@ -52,50 +52,48 @@ func (lst *List[T]) RemoveAt(idx int) (T, error) {
 func (lst *List[T]) Remove(value T) (T, error) {
 	curr := lst.head
 	var empty T
-	lst.Length--
 
 	if lst.Length == 0 {
+		lst.Length--
+
 		lst.head = nil
 		lst.tail = nil
-		return curr.Value, nil
+		return empty, nil
 
 	} else if lst.Length < 0 {
 		lst.Length = 0
 		return empty, errors.New("list empty brother man")
 	}
 
-	for i := 0; curr != nil && i <= lst.Length; i++ {
+	for curr != nil {
 		if curr.Value == value {
-			break
+			if curr.Next != nil {
+				curr.Next.Prev = curr.Prev
+			}
+
+			if curr.Prev != nil {
+				curr.Prev.Next = curr.Next
+			}
+
+			if curr == lst.head {
+				lst.head = curr.Next
+			}
+			if curr == lst.tail {
+				lst.tail = curr.Prev
+			}
+
+			curr.Prev = nil
+			curr.Next = nil
+
+			lst.Length--
+
+			return curr.Value, nil
 		}
 
 		curr = curr.Next
 	}
 
-	if curr == nil {
-
-		return empty, errors.New("value not found")
-	}
-
-	if curr.Next != nil {
-		curr.Next.Prev = curr.Prev
-	}
-
-	if curr.Prev != nil {
-		curr.Prev.Next = curr.Next
-	}
-
-	if curr == lst.head {
-		lst.head = curr.Next
-	}
-	if curr == lst.tail {
-		lst.tail = curr.Prev
-	}
-
-	curr.Prev = nil
-	curr.Next = nil
-
-	return curr.Value, nil
+	return empty, errors.New("value not found")
 }
 
 func (lst *List[T]) Append(value T) {
@@ -190,4 +188,14 @@ func (lst *List[T]) GetAll() []T {
 		elems = append(elems, curr.Value)
 	}
 	return elems
+}
+
+func (lst *List[T]) Clear() {
+	lst.head = nil
+	lst.tail = nil
+	lst.Length = 0
+}
+
+func (lst *List[T]) IsEmpty() bool {
+	return lst.Length == 0
 }
