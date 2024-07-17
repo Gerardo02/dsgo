@@ -49,6 +49,12 @@ func main() {
 		log.Println(err)
 	}
 
+	_, err = lista_perrona.RemoveAt(6)
+
+	if err != nil {
+		log.Println(err)
+	}
+
 	otra.Append("otra brother")
 	otra.Append("ramses")
 	otra.Append("calamity")

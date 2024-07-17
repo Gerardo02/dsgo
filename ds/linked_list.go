@@ -18,8 +18,35 @@ type node[T Comparable] struct {
 	Prev  *node[T]
 }
 
-func (lst *List[T]) RemoveAt(idx int) {
+func (lst *List[T]) RemoveAt(idx int) (T, error) {
+	if idx > lst.Length || idx < 0 {
+		var empty T
+		return empty, errors.New("bad index")
+	}
+	curr := lst.head
+	for i := 0; curr != nil && i < idx; i++ {
+		curr = curr.Next
+	}
 
+	if curr.Next != nil {
+		curr.Next.Prev = curr.Prev
+	}
+
+	if curr.Prev != nil {
+		curr.Prev.Next = curr.Next
+	}
+
+	if curr == lst.head {
+		lst.head = curr.Next
+	}
+	if curr == lst.tail {
+		lst.tail = curr.Prev
+	}
+
+	curr.Prev = nil
+	curr.Next = nil
+
+	return curr.Value, nil
 }
 
 func (lst *List[T]) Remove(value T) (T, error) {
@@ -141,7 +168,7 @@ func (lst *List[T]) InstertAt(idx int, value T) error {
 }
 
 func (lst *List[T]) Get(idx int) (T, error) {
-	if idx > lst.Length {
+	if idx > lst.Length || idx < 0 {
 		var empty T
 		return empty, errors.New("bad index")
 	}
