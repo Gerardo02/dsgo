@@ -20,8 +20,7 @@ type node[T Comparable] struct {
 
 func (lst *List[T]) RemoveAt(idx int) (T, error) {
 	if idx > lst.Length || idx < 0 {
-		var empty T
-		return empty, errors.New("bad index")
+		return *new(T), errors.New("bad index")
 	}
 	curr := lst.head
 	for i := 0; curr != nil && i < idx; i++ {
@@ -35,24 +34,20 @@ func (lst *List[T]) RemoveAt(idx int) (T, error) {
 
 func (lst *List[T]) Remove(value T) (T, error) {
 	curr := lst.head
-	var empty T
-
+	lst.Length--
 	if lst.Length == 0 {
-		lst.Length--
 
 		lst.head = nil
 		lst.tail = nil
-		return empty, nil
+		return *new(T), nil
 
 	} else if lst.Length < 0 {
 		lst.Length = 0
-		return empty, errors.New("list empty brother man")
+		return *new(T), errors.New("list empty brother man")
 	}
 
 	for curr != nil {
 		if curr.Value == value {
-
-			lst.Length--
 
 			return lst.removeNode(curr), nil
 		}
@@ -60,7 +55,7 @@ func (lst *List[T]) Remove(value T) (T, error) {
 		curr = curr.Next
 	}
 
-	return empty, errors.New("value not found")
+	return *new(T), errors.New("value not found")
 }
 
 func (lst *List[T]) Append(value T) {
@@ -130,14 +125,14 @@ func (lst *List[T]) InstertAt(idx int, value T) error {
 	return nil
 }
 
-func (lst *List[T]) Get(idx int) (T, error) {
-	// if idx > lst.Length || idx < 0 {
-	// 	var empty T
-	// 	return empty, errors.New("bad index")
-	// }
+func (lst *List[T]) Get(idx int) T {
 	curr := lst.head
 
-	return lst.getAt(curr, idx).Value, nil
+	if node := lst.getAt(curr, idx); node != nil {
+		return node.Value
+	}
+
+	return *new(T)
 }
 
 func (lst *List[T]) GetAll() []T {
@@ -160,6 +155,33 @@ func (lst *List[T]) Clear() {
 
 func (lst *List[T]) IsEmpty() bool {
 	return lst.Length == 0
+}
+
+func (lst *List[T]) Peek() (T, T) {
+
+	if lst.head == nil || lst.tail == nil {
+		return *new(T), *new(T)
+	}
+
+	return lst.head.Value, lst.tail.Value
+}
+
+func (lst *List[T]) PeekBack() T {
+
+	if lst.tail == nil {
+		return *new(T)
+	}
+
+	return lst.tail.Value
+}
+
+func (lst *List[T]) PeekFront() T {
+
+	if lst.head == nil {
+		return *new(T)
+	}
+
+	return lst.head.Value
 }
 
 func (lst *List[T]) removeNode(node *node[T]) T {
@@ -185,6 +207,9 @@ func (lst *List[T]) removeNode(node *node[T]) T {
 }
 
 func (lst *List[T]) getAt(node *node[T], idx int) *node[T] {
+	if idx > lst.Length || idx < 0 {
+		return nil
+	}
 	for i := 0; node != nil && i < idx; i++ {
 		node = node.Next
 	}

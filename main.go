@@ -44,6 +44,7 @@ func main() {
 
 	println("Lista perrona: ")
 	println(lista_perrona.IsEmpty())
+	println(lista_perrona.Get(12))
 	elementos := lista_perrona.GetAll()
 	for i := 0; i < len(elementos); i++ {
 		println(strconv.Itoa(i) + ": " + elementos[i])
@@ -57,13 +58,12 @@ func main() {
 	}
 	println("Lista pero con Get: ")
 	for i := 0; i < lista_perrona.Length; i++ {
-		val, _ := lista_perrona.Get(i)
-		println(strconv.Itoa(i) + ": " + val)
+		println(strconv.Itoa(i) + ": " + lista_perrona.Get(i))
 	}
 	println("=======================")
 
-	lista_perrona.Clear()
+	l, r := lista_perrona.Peek()
 
-	println(lista_perrona.IsEmpty())
+	println(l, r)
 
 }
