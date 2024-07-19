@@ -28,25 +28,9 @@ func (lst *List[T]) RemoveAt(idx int) (T, error) {
 		curr = curr.Next
 	}
 
-	if curr.Next != nil {
-		curr.Next.Prev = curr.Prev
-	}
+	lst.Length--
 
-	if curr.Prev != nil {
-		curr.Prev.Next = curr.Next
-	}
-
-	if curr == lst.head {
-		lst.head = curr.Next
-	}
-	if curr == lst.tail {
-		lst.tail = curr.Prev
-	}
-
-	curr.Prev = nil
-	curr.Next = nil
-
-	return curr.Value, nil
+	return lst.removeNode(curr), nil
 }
 
 func (lst *List[T]) Remove(value T) (T, error) {
@@ -67,27 +51,10 @@ func (lst *List[T]) Remove(value T) (T, error) {
 
 	for curr != nil {
 		if curr.Value == value {
-			if curr.Next != nil {
-				curr.Next.Prev = curr.Prev
-			}
-
-			if curr.Prev != nil {
-				curr.Prev.Next = curr.Next
-			}
-
-			if curr == lst.head {
-				lst.head = curr.Next
-			}
-			if curr == lst.tail {
-				lst.tail = curr.Prev
-			}
-
-			curr.Prev = nil
-			curr.Next = nil
 
 			lst.Length--
 
-			return curr.Value, nil
+			return lst.removeNode(curr), nil
 		}
 
 		curr = curr.Next
@@ -152,9 +119,7 @@ func (lst *List[T]) InstertAt(idx int, value T) error {
 	lst.Length++
 
 	curr := lst.head
-	for i := 0; curr != nil && i < idx; i++ {
-		curr = curr.Next
-	}
+	curr = lst.getAt(curr, idx)
 
 	node.Next = curr
 	node.Prev = curr.Prev
@@ -166,16 +131,13 @@ func (lst *List[T]) InstertAt(idx int, value T) error {
 }
 
 func (lst *List[T]) Get(idx int) (T, error) {
-	if idx > lst.Length || idx < 0 {
-		var empty T
-		return empty, errors.New("bad index")
-	}
+	// if idx > lst.Length || idx < 0 {
+	// 	var empty T
+	// 	return empty, errors.New("bad index")
+	// }
 	curr := lst.head
-	for i := 0; curr != nil && i < idx; i++ {
-		curr = curr.Next
-	}
 
-	return curr.Value, nil
+	return lst.getAt(curr, idx).Value, nil
 }
 
 func (lst *List[T]) GetAll() []T {
@@ -198,4 +160,34 @@ func (lst *List[T]) Clear() {
 
 func (lst *List[T]) IsEmpty() bool {
 	return lst.Length == 0
+}
+
+func (lst *List[T]) removeNode(node *node[T]) T {
+	if node.Next != nil {
+		node.Next.Prev = node.Prev
+	}
+
+	if node.Prev != nil {
+		node.Prev.Next = node.Next
+	}
+
+	if node == lst.head {
+		lst.head = node.Next
+	}
+	if node == lst.tail {
+		lst.tail = node.Prev
+	}
+
+	node.Prev = nil
+	node.Next = nil
+
+	return node.Value
+}
+
+func (lst *List[T]) getAt(node *node[T], idx int) *node[T] {
+	for i := 0; node != nil && i < idx; i++ {
+		node = node.Next
+	}
+
+	return node
 }

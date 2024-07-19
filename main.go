@@ -8,7 +8,6 @@ import (
 )
 
 func main() {
-	otra := ds.List[string]{}
 	lista_perrona := ds.List[string]{}
 
 	err := lista_perrona.InstertAt(0, "roomba")
@@ -43,28 +42,6 @@ func main() {
 		log.Println(err)
 	}
 
-	_, err = lista_perrona.Remove("ropa")
-
-	if err != nil {
-		log.Println(err)
-	}
-
-	_, err = lista_perrona.RemoveAt(6)
-
-	if err != nil {
-		log.Println(err)
-	}
-
-	otra.Append("otra brother")
-	otra.Append("ramses")
-	otra.Append("calamity")
-	otra.Prepend("colas")
-	otra.Prepend("rifadas")
-	otra.Prepend("no pues")
-	// elementos := lista_perrona.GetAll()
-	// for i := 0; i < len(elementos); i++ {
-	// 	println("Elements en el loop: " + elementos[i])
-	// }
 	println("Lista perrona: ")
 	println(lista_perrona.IsEmpty())
 	elementos := lista_perrona.GetAll()
@@ -72,11 +49,18 @@ func main() {
 		println(strconv.Itoa(i) + ": " + elementos[i])
 	}
 	println("=======================")
-	// println("Lista otra: ")
-	// elementosOtra := otra.GetAll()
-	// for i := 0; i < len(elementosOtra); i++ {
-	// 	println(strconv.Itoa(i) + ": " + elementosOtra[i])
-	// }
+
+	_, err = lista_perrona.Remove("ropa")
+
+	if err != nil {
+		log.Println(err)
+	}
+	println("Lista pero con Get: ")
+	for i := 0; i < lista_perrona.Length; i++ {
+		val, _ := lista_perrona.Get(i)
+		println(strconv.Itoa(i) + ": " + val)
+	}
+	println("=======================")
 
 	lista_perrona.Clear()
 
