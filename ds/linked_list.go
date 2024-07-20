@@ -96,12 +96,8 @@ func (lst *List[T]) InstertAt(idx int, value T) error {
 		return errors.New("empty list my guy")
 	}
 
-	if idx > lst.Length {
+	if idx > lst.Length || idx < 0 {
 		return errors.New("oh no")
-	}
-
-	if idx < 0 {
-		return errors.New("que haces bro")
 	}
 
 	if idx == 0 {
