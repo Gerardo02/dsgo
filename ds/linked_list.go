@@ -39,11 +39,11 @@ func (lst *List[T]) Remove(value T) (T, error) {
 
 		lst.head = nil
 		lst.tail = nil
-		return *new(T), nil
+		return curr.Value, nil
 
 	} else if lst.Length < 0 {
 		lst.Length = 0
-		return *new(T), errors.New("list empty brother man")
+		return *new(T), errors.New("empty list brother man")
 	}
 
 	for curr != nil {
