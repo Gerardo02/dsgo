@@ -1,6 +1,6 @@
 ﻿# Linked lists in GO!!!
 
-Holy cow how can anyone can implement linked lists in GO. And DOUBLY!!!!
+Holy cow, how could anybody is able to implement linked lists in GO???. And DOUBLY?!?!?!?!
 
 ## Table of Contents
 
