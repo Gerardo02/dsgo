@@ -33,17 +33,16 @@ func (lst *List[T]) RemoveAt(idx int) (T, error) {
 }
 
 func (lst *List[T]) Remove(value T) (T, error) {
+	if lst.Length == 0 {
+		return *new(T), errors.New("empty list brother man")
+	}
+
 	curr := lst.head
 	lst.Length--
 	if lst.Length == 0 {
-
 		lst.head = nil
 		lst.tail = nil
 		return curr.Value, nil
-
-	} else if lst.Length < 0 {
-		lst.Length = 0
-		return *new(T), errors.New("empty list brother man")
 	}
 
 	for curr != nil {
@@ -54,7 +53,7 @@ func (lst *List[T]) Remove(value T) (T, error) {
 
 		curr = curr.Next
 	}
-
+	lst.Length = 0
 	return *new(T), errors.New("value not found")
 }
 
@@ -71,7 +70,6 @@ func (lst *List[T]) Append(value T) {
 	lst.tail.Next = &node
 
 	lst.tail = &node
-
 }
 
 func (lst *List[T]) Prepend(value T) {
